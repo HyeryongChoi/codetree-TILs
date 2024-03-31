@@ -81,15 +81,7 @@ def pushSanta(target, direction, size):
                 board[ny][nx] = target
 
             return
-            
-
-
-# def deleteSanta(target):
-#     global santas
-
-#     santas = [santa for santa in santas if santa[0] != target]
         
-
 def getRudolfNextPos(rudolf, santa):
     y, x = rudolf
     min_dist = 1e9
@@ -195,16 +187,14 @@ def solution():
             # i번 산타가 탈락한 경우 움직일 수 없음
             if cur_order < 0: continue
 
-            s_pos = (santas[cur_order][1], santas[cur_order][2])
-
-            board[s_pos[0]][s_pos[1]] = 0
-
-            s_pos, s_direction = getSantaNextPos(s_pos,rudolf)
+            s_prev_pos = (santas[cur_order][1], santas[cur_order][2])
+            s_pos, s_direction = getSantaNextPos(s_prev_pos,rudolf)
 
             # 산타가 움직이지 않은 경우 다음 산타로 넘어감
             if s_direction < 0: continue
 
             # 산타 움직임
+            board[s_prev_pos[0]][s_prev_pos[1]] = 0
             santas[cur_order] = [i, s_pos[0], s_pos[1]]
             board[s_pos[0]][s_pos[1]] = i
 
@@ -230,5 +220,3 @@ def solution():
     print(*scores[1:])
 
 solution()
-
-# 아니 이거 기절한 산타랑 부딪히면 어떻게 되는거지?
