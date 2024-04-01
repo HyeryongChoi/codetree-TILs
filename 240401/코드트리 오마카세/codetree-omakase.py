@@ -51,10 +51,12 @@ def eat(x, waited, belt):
     if n > 0: waited[x] = [name, n]
     else: waited[x] = []
 
+    if x in belt and len(belt[x]) == 0:
+        del belt[x]
 
 def eatAll(waited, belt):
-    for x in belt:
-        if x in waited and len(waited[x]) > 0:
+    for x in waited:
+        if len(waited[x]) > 0:
             eat(x, waited, belt)
 
 
@@ -90,7 +92,6 @@ def solution():
             if x not in belt: belt[x] = []
             belt[x].append(name)
    
-
             # t시각에 x위치에서 초밥을 기다리는 손님이 있다면 초밥 먹기
             if x in waited and len(waited[x]) > 0:
                 eat(x, waited, belt)
