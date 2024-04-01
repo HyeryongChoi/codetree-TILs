@@ -44,22 +44,23 @@ def rotate(belt):
 def eat(x, waited, belt):
     name, n = waited[x]
 
-    while n > 0 and x in belt and name in belt[x]:
-        belt[x].remove(name)
+    while n > 0 and x in belt and name in belt[x] and belt[x][name] > 0:
+        belt[x][name] -= 1
         n-= 1
 
     if n > 0: waited[x] = [name, n]
     else: waited[x] = []
 
-    if x in belt and len(belt[x]) == 0:
-        del belt[x]
+    if x in belt and name in belt[x] and belt[x][name] == 0:
+        del belt[x][name]
+
+        if len(belt[x]) == 0:
+            del belt[x]
 
 def eatAll(waited, belt):
     for x in waited:
         if len(waited[x]) > 0:
             eat(x, waited, belt)
-
-
 
 
 def solution():
@@ -89,8 +90,13 @@ def solution():
 
             # t시각에 x 위치 앞에 name을 부착한 초밥 하나 올려놓음
             # 같은 위치에 여러 회전 초밥 가능, 같은 이름이 부착된 초밥 같은 위치 가능
-            if x not in belt: belt[x] = []
-            belt[x].append(name)
+            if x not in belt: 
+                belt[x] = dict()
+            
+            if name not in belt[x]:
+                belt[x][name] = 0
+
+            belt[x][name] += 1
    
             # t시각에 x위치에서 초밥을 기다리는 손님이 있다면 초밥 먹기
             if x in waited and len(waited[x]) > 0:
@@ -103,10 +109,16 @@ def solution():
 
             # x앞으로 오는 초밥들 중 자신의 이름이 적혀있는 초밥을 n개 먹고 자리를 뜸
             # 만약 t시각, x위치에 name초밥이 놓여 있다면 착석 즉시 먹게 되며, 동시에 여러 개 먹기 가능
-            while n > 0 and x in belt and name in belt[x]:
-                belt[x].remove(name)
+            while n > 0 and x in belt and name in belt[x] and belt[x][name] > 0:
+                belt[x][name] -= 1
                 n -= 1
             
+            if x in belt and name in belt[x] and belt[x][name] == 0:
+                del belt[x][name]
+
+                if len(belt[x]) == 0:
+                    del belt[x]
+
             # 이름이 name인 사람이 t시각에 x 의자에 앉음
             # 해당 위치에 사람이 없음을 가정해도 좋음
             if n > 0:
@@ -124,7 +136,8 @@ def solution():
                 if len(waited[x]) > 0: p_count += 1
 
             for x in belt:
-                c_count += len(belt[x])
+                for name in belt[x]:
+                    c_count += belt[x][name]
             
             print(p_count, c_count)
         
