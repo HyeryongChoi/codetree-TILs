@@ -10,7 +10,6 @@ L, N, Q = map(int, input().split())
 # 테두리를 벽으로 둘러 처리하기
 board = [[2]*(L+2)] + [[2]+list(map(int, input().split()))+[2] for _ in range(L)] + [[2]*(L+2)]
 
-
 # 기사정보 (r,c,h,w,k) -> 좌측 상단(r,c) ~ 세로h, 가로w, 초기체력k
 knights = dict()
 hps = [0]*(N+1) # 기사들 초기 체력 정보 저장
@@ -44,7 +43,7 @@ def push(k_start, k_direction):
                 if isTrap(y,x): dmg[k_idx] += 1 # 명령 받은 기사 포함 움직이는 기사 모두 일단 데미지 처리
         
         # 다른 기사와 겹치는지 탐색
-        for idx in range(1, N+1):
+        for idx in knights:
             if idx in pushed: continue
 
             (tr,tc,th,tw,_) = knights[idx]
