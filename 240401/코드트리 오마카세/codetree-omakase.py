@@ -35,21 +35,21 @@ def rotate(belt):
     last = belt.pop()
     belt.appendleft(last)
 
-def eat(x, waited, belt):
-    waited_name, n = waited[x]
 
-    while n > 0 and waited_name in belt[x]:
-        belt[x].remove(waited_name)
+def eat(x, waited, belt):
+    name, n = waited[x]
+
+    while n > 0 and name in belt[x]:
+        belt[x].remove(name)
         n-= 1
 
-    if n > 0: waited[x] = [waited_name, n]
+    if n > 0: waited[x] = [name, n]
     else: waited[x] = []
+
 
 def eatAll(waited, belt):
     for x in range(len(belt)):
         if len(waited[x]) > 0:
-            name, n = waited[x]
-
             eat(x, waited, belt)
 
 
@@ -64,6 +64,7 @@ def solution():
     # 의자는 x = 0 ~ L-1
     # 의자:초밥 = 1:n
     # 처음엔 벨트 위에 초밥 없음, 의자에도 사람 없음
+
     prev_time = commands[0][1]
     for command in commands:
         op_code, time = command[0], command[1]
